@@ -101,7 +101,8 @@ select.bic <- function(g, n, d) {
     return(list(scores = scores, index = index))
 }
 
-sim.summarize <- function(sim.objects, nlambda, K, stars.thresh, stars.subsample.ratio, rep.num) {
+sim.summarize <- function(sim.objects, nlambda, K, stars.thresh,
+                          stars.subsample.ratio, rep.num) {
     simplify2array(lapply(sim.objects, function(sim) {        
         theta <- sim$omega
         sigma <- sim$sigma
