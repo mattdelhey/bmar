@@ -1,10 +1,11 @@
 get.neighborhood <- function(edges, model.index, l) {
     model.edges <- edges$n.edges[model.index]
+    max.index <- length(edges$n.edges)
     ind <- setdiff(which(edges$n.edges <= model.edges + l &
                            edges$n.edges >= model.edges - l), model.index)
     if (length(ind) == 0) {
-        #ind <- c(model.index + 1, model.index - 1)
-        stop("No neighbors")
+        warning("No neighbors")
+        ind <- c(min(max.index, model.index + 1), max(1, model.index - 1))
     }
         
     return(ind)
