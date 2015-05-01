@@ -4,7 +4,7 @@ get.neighborhood <- function(edges, model.index, l) {
     ind <- setdiff(which(edges$n.edges <= model.edges + l &
                            edges$n.edges >= model.edges - l), model.index)
     if (length(ind) == 0) {
-        warning("No neighbors")
+        #warning("No neighbors")
         ind <- c(min(max.index, model.index + 1), max(1, model.index - 1))
     }
         

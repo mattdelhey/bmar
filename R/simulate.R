@@ -43,7 +43,7 @@ g.cvf <- function(K, x, lambda.seq) {
 
     library(parallel)
     cl <- makeCluster(4)
-    clusterEvalQ(cl, {library(huge); devtools::load_all("~/bmar")})
+    clusterEvalQ(cl, {library(huge); library(bmar)})
     
     r <- t(simplify2array(parLapply(cl, 1:length(lambda.seq), function(i) {
         mes <- sprintf("Conducting cross-validation....in progress: [%i of %i] \t lambda = %f", i, length(lambda.seq), lambda.seq[i])

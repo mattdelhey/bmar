@@ -1,6 +1,7 @@
 library(huge)
 library(xtable)
 devtools::install_github("mattdelhey/bmar")
+library(bmar)
 
 ## Parameters
 f.out.graphs <- "simulation-graphs.pdf"
@@ -16,10 +17,9 @@ sim.results <- simplify2array(lapply(1:reps, function(i) {
     sim.band    <- huge.generator(n = 200, d = 300, g = 2, graph = "band")
     sim.sclfree <- huge.generator(n = 200, d = 300, graph = "scale-free")    
     sim.objects <- list(sim.random, sim.cluster, sim.band, sim.sclfree)
-    #sim.objects <- list(sim.random)
-    sim.summarize(sim.objects, nlambda = 100, K = 5, stars.thresh = 0.05,
+    sim.summarize(sim.objects, nlambda = 1000, K = 5, stars.thresh = 0.05,
                   stars.subsample.ratio = NULL, rep.num = 10,
-                  l = 5, niter = 10000, burnin = 2000)
+                  l = 10, niter = 10000, burnin = 2000)
 }))
 
 ## Mean, sd

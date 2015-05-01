@@ -1,10 +1,11 @@
 library(huge)
 devtools::install_github("mattdelhey/bmar")
+library(bmar)
 
 data(breastcancer, package = "gRbase")
 bc <- as.matrix(breastcancer[, -1001]) # remove label
 
-g <- huge(bc, nlambda = 2000, method = "mb", lambda.min.ratio = 0.01)
+g <- huge(bc, nlambda = 100, method = "glasso", lambda.min.ratio = 0.01)
 lambda.seq <- g$lambda
 
 g.bic <- select.bic(g = g, n = nrow(bc), d = ncol(bc))
