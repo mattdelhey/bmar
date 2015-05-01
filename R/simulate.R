@@ -144,7 +144,7 @@ sim.summarize <- function(sim.objects, nlambda, K, stars.thresh,
         
         # BMA
         message(sprintf("... [method] \t BMA..."))
-        t.bma <- system.time(g.bma <- bmar(x = x, l = l, nlambda = nlambda, niter = niter, burnin = burnin))[3]
+        t.bma <- system.time(g.bma <- bmar(g = g, l = l, niter = niter, burnin = burnin))[3]
         bma.edges <- and.rule(g.bma$theta.hat)
 
         # BIC
