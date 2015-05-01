@@ -2,10 +2,16 @@
 % Please edit documentation in R/simulate.R
 \name{get.lambda.seq}
 \alias{get.lambda.seq}
+\title{get.lambda.seq
+Create an appropriately scaled sequence of candidate lambda values}
 \usage{
 get.lambda.seq(nlambda, S, d, lambda.min.ratio = 0.1)
 }
 \arguments{
 \item{S}{correlation of data}
+}
+\description{
+get.lambda.seq
+Create an appropriately scaled sequence of candidate lambda values
 }
 

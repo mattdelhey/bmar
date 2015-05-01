@@ -1,3 +1,5 @@
+#' get.lambda.seq
+#' Create an appropriately scaled sequence of candidate lambda values
 #' @param S correlation of data
 get.lambda.seq <- function(nlambda, S, d, lambda.min.ratio = 0.1) {
     lambda.max <- max(max(S-diag(d)),-min(S-diag(d)))
