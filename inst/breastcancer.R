@@ -1,14 +1,16 @@
 library(huge)
+devtools::install_github("mattdelhey/bmar")
 
 data(breastcancer, package = "gRbase")
 bc <- as.matrix(breastcancer[, -1001]) # remove label
 
-g <- huge(bc, nlambda = 30, method = "glasso", lambda.min.ratio = 0.01)
+g <- huge(bc, nlambda = 2000, method = "mb", lambda.min.ratio = 0.01)
 lambda.seq <- g$lambda
 
 g.bic <- select.bic(g = g, n = nrow(bc), d = ncol(bc))
 g.ss <- huge.select(g, criterion = "stars", stars.thresh = 0.05, stars.subsample.ratio = NULL, rep.num = 5)
 g.cv <- g.cvf(K = 5, x = bc, lambda.seq = lambda.seq)
+g.bma <- bmar(g, nlambda = 1000, niter = 10000, burnin = 2000)
 
 g.cv.min <- ose.rule(g.cv$m, g.cv$sd)
 

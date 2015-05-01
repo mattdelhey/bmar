@@ -1,3 +1,10 @@
+#' @param S correlation of data
+get.lambda.seq <- function(nlambda, S, d, lambda.min.ratio = 0.1) {
+    lambda.max <- max(max(S-diag(d)),-min(S-diag(d)))
+    lambda.min <- lambda.min.ratio*lambda.max
+    lambda <- exp(seq(log(lambda.max), log(lambda.min), length = nlambda))
+}
+
 get.sparsity <- function(edges) {
     n <- prod(dim(edges))
     n.nz <- length(which(edges == 1))
@@ -129,8 +136,14 @@ sim.summarize <- function(sim.objects, nlambda, K, stars.thresh,
         message(sprintf("[simulation] \t Simulation for graph type {%s}", sim$graph.type))
         g <- huge(x, nlambda = nlambda, method = "glasso")
         lambda.seq <- g$lambda
+        lambda.seq.cv <- sample(g$lambda, length(g$lambda)/10)
         
         ## Model selection methods
+        
+        # BMA
+        message(sprintf("... [method] \t BMA..."))
+        t.bma <- system.time(g.bma <- bmar(x = x, l = l, nlambda = nlambda, niter = niter, burnin = burnin))[3]
+        bma.edges <- and.rule(g.bma$theta.hat)
 
         # BIC
         message(sprintf("... [method] \t BIC..."))
@@ -144,12 +157,7 @@ sim.summarize <- function(sim.objects, nlambda, K, stars.thresh,
                             rep.num = rep.num))[3]
         # CV
         message(sprintf("... [method] \t CV..."))
-        t.cv <- system.time(g.cv <- g.cvf(K = K, x = x, lambda.seq = lambda.seq/10))[3]
-
-        # BMA
-        message(sprintf("... [method] \t BMA..."))
-        t.bma <- system.time(g.bma <- bmar(x = x, l = l, nlambda = nlambda, niter = niter, burnin = burnin))[3]
-        bma.edges <- and.rule(g.bma$theta.hat)
+        t.cv <- system.time(g.cv <- g.cvf(K = K, x = x, lambda.seq = lambda.seq.cv))[3]
         
         ## Sparsity
         sparsity <- c(g$sparsity[c(g.bic$index, g.ss$opt.index, g.cv$minimizer)], get.sparsity(bma.edges))

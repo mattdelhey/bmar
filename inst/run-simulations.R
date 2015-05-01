@@ -1,34 +1,25 @@
 library(huge)
 library(xtable)
-library(parallel)
-
-cl <- makeCluster(4)
-clusterEvalQ(cl, {library(huge); library(xtable); devtools::load_all("~/bmar")})
+devtools::install_github("mattdelhey/bmar")
 
 ## Parameters
 f.out.graphs <- "simulation-graphs.pdf"
-reps <- 3
+reps <- 5
 
 ## Simulations
 sim.plot(sim.objects, f.out.graphs)
 
 ## sim.result[method, error, model, replicate]
-## sim.results <- simplify2array(replicate(reps, {
-##     sim.random  <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "random", prob = 0.006)
-##     sim.cluster <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "cluster")
-##     sim.band    <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "band")
-##     sim.sclfree <- huge.generator(n = 200, d = 300, graph = "scale-free")    
-##     sim.objects <- list(sim.random, sim.cluster, sim.band, sim.sclfree)
-##     sim.summarize(sim.objects, nlambda = 100, K = 5, stars.thresh = 0.05, stars.subsample.ratio = NULL, rep.num = 10)
-## }))
-
-sim.results <- simplify2array(parLapply(cl, 1:reps, function(i) {
+sim.results <- simplify2array(lapply(1:reps, function(i) {
     sim.random  <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "random", prob = 0.006)
     sim.cluster <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "cluster")
-    sim.band    <- huge.generator(n = 200, d = 300, v = 0.3, u = 0.1, graph = "band")
+    sim.band    <- huge.generator(n = 200, d = 300, g = 2, graph = "band")
     sim.sclfree <- huge.generator(n = 200, d = 300, graph = "scale-free")    
     sim.objects <- list(sim.random, sim.cluster, sim.band, sim.sclfree)
-    sim.summarize(cl, sim.objects, nlambda = 30, K = 5, stars.thresh = 0.05, stars.subsample.ratio = NULL, rep.num = 10)
+    #sim.objects <- list(sim.random)
+    sim.summarize(sim.objects, nlambda = 100, K = 5, stars.thresh = 0.05,
+                  stars.subsample.ratio = NULL, rep.num = 10,
+                  l = 5, niter = 10000, burnin = 2000)
 }))
 
 ## Mean, sd
