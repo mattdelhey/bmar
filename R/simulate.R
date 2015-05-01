@@ -7,6 +7,11 @@ get.lambda.seq <- function(nlambda, S, d, lambda.min.ratio = 0.1) {
     lambda <- exp(seq(log(lambda.max), log(lambda.min), length = nlambda))
 }
 
+redu <- function(x, l) {
+    ind <- floor(seq(1, length(x), length.out = l))
+    x[ind]
+}
+
 get.sparsity <- function(edges) {
     n <- prod(dim(edges))
     n.nz <- length(which(edges == 1))
@@ -138,7 +143,8 @@ sim.summarize <- function(sim.objects, nlambda, K, stars.thresh,
         message(sprintf("[simulation] \t Simulation for graph type {%s}", sim$graph.type))
         g <- huge(x, nlambda = nlambda, method = "glasso")
         lambda.seq <- g$lambda
-        lambda.seq.cv <- sample(g$lambda, length(g$lambda)/10)
+        lambda.seq.cv <- redu(g$lambda, length(g$lambda)/10)
+        
         
         ## Model selection methods
         
