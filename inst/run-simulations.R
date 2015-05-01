@@ -7,7 +7,7 @@ f.out.graphs <- "simulation-graphs.pdf"
 reps <- 5
 
 ## Simulations
-sim.plot(sim.objects, f.out.graphs)
+#sim.plot(sim.objects, f.out.graphs)
 
 ## sim.result[method, error, model, replicate]
 sim.results <- simplify2array(lapply(1:reps, function(i) {
