@@ -71,6 +71,12 @@ bmar <- function(x = NULL, g = NULL, l, nlambda = 1000, niter, burnin) {
     ## Initialize t=0 model with minimum sparsity
     model.t <- length(lambda.seq) #index
 
+    if (any(is.infinite(g$loglik))) {
+        ind.inf <- which(is.infinite(g$loglik))
+        ind.fin <- which(is.finite(g$loglik))
+        g$loglik[ind.inf] <- max(g$loglik[ind.fin]) * g$lambda[ind.inf]   
+    }
+
     accept <- 0
     for (t in 1:(niter+burnin)) {
         ## Propose new model on uniform distribution of neighbors
