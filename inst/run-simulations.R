@@ -5,7 +5,7 @@ library(bmar)
 
 ## Parameters
 f.out.graphs <- "simulation-graphs.pdf"
-reps <- 5
+reps <- 2
 
 ## Simulations
 #sim.plot(sim.objects, f.out.graphs)
